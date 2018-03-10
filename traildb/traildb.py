@@ -502,14 +502,14 @@ class TrailDBEventFilter(object):
     (field_name, "value", True) -- match records with field_name != "value"
     (start_time, end_time) -- match records with start_time <= time < end_time
 
-    Clauses are boolean expressions formed from terms, which are connected with AND.
+    Clauses are boolean expressions formed from terms, which are connected with OR.
     Clauses are defined with lists of terms:
 
     [term]
     [term1, term2]
     [term1, term2, ...]
 
-    Queries are boolean expressions formed from clauses, which are connected with OR.
+    Queries are boolean expressions formed from clauses, which are connected with AND.
     Queries are defined with lists of clauses:
 
     [clause]
@@ -521,9 +521,9 @@ class TrailDBEventFilter(object):
     [[("user", "george_jetson")]] -- Match records for the user "george_jetson"
     [[("user", "george_jetson", True)]] -- Match records for users other than "george_jetson"
     [[(1501013929, 1501100260)]] -- Match records between 2017-07-25 3:18 pm to  2017-07-26 3:18 pm
-    [[("job_title", "manager"), ("user", "george_jetson")]] -- Match records for the user "george_jetson" AND with job title "manager"
-    [[("job_title", "manager")], [("user", "george_jetson")]] -- Match records for the user "george_jetson" OR with job title "manager"
-    [[("job_title", "manager"), (1501013929, 1501100260)], [("user", "george_jetson"), (1501013929, 1501100260)]] -- Match records for the user "george_jetson" OR with job title "manager" and between 2017-07-25 3:18 pm to  2017-07-26 3:18 pm
+    [[("job_title", "manager"), ("user", "george_jetson")]] -- Match records for the user "george_jetson" OR with job title "manager"
+    [[("job_title", "manager")], [("user", "george_jetson")]] -- Match records for the user "george_jetson" AND with job title "manager"
+    [[("job_title", "manager"), ("user", "george_jetson")], [(1501013929, 1501100260)]] -- Match records for the user "george_jetson" OR with job title "manager" and between 2017-07-25 3:18 pm to  2017-07-26 3:18 pm
     """
     def __init__(self, db, query):
         self.flt = lib.tdb_event_filter_new()
